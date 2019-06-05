@@ -31,7 +31,7 @@ __global__ filtering( Point3D *points, int width, int height, int hs, int hr, Po
                     Pt.MSPoint5DSet( hx , hy , points[ hx + hy * width ].l , points[ hx + hy * width ].g , points[ hx + hy * width ].b ) ;
                     Pt.PointLab() ;
 
-                    if( pointColorDistance( Pt , PtCur ) < hr ){ 
+                    if( Pt.MSPoint5DColorDistance(PtCur) < hr ){ 
                         PtSum.MSPointAcccm( Pt ) ;
                         NumPts ++ ;
                      }
@@ -43,8 +43,8 @@ __global__ filtering( Point3D *points, int width, int height, int hs, int hr, Po
              PtCur.MSPoint5DCopy( PtSum );
              step ++ ;
 
-        }while ( ... ) ;
-
+        }while ( (PtCur.MSPoint5DColorDistance(PtPrev) > MS_MEAN_SHIFT_TOL_COLOR) && (PtCur.MSPoint5DSpatialDistance(PtPrev) > MS_MEAN_SHIFT_TOL_SPATIAL) && (step < MS_MAX_NUM_CONVERGENCE_STEPS) ) ;
+ 
         PtCur.PointRGB() ;
 
         result[ tidx + tidy * width ].l = PtCur.l ;
