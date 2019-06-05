@@ -1,7 +1,7 @@
 /*
 #################################################################
 ## UTF-8
-## ÎÄ¼þËµÃ÷£ºÎÄ¼þ°üº¬ËùÓÐÓëcudaÏà¹ØµÄº¯Êý¡£
+## æ–‡ä»¶è¯´æ˜Žï¼šæ–‡ä»¶åŒ…å«æ‰€æœ‰ä¸Žcudaç›¸å…³çš„å‡½æ•°ã€‚
 #################################################################
 */
 
@@ -11,12 +11,12 @@
 
 /*
 #################################################################
-## º¯Êý£ºRGB2Lab
-## º¯ÊýÃèÊö£º½«Point3DÊý×éÖÐ´ÓRGB¿Õ¼ä×ª»»µ½Lab¿Õ¼ä¡£
-## ²ÎÊýÃèÊö£º
-## points£º°üº¬Ô­Í¼ÏñÏñËØµãÎ»ÖÃºÍRGBÖµÐÅÏ¢µÄÊäÈëPoint3DÊý×é
-## width£ºÊäÈëÍ¼ÏñµÄ¿í
-## height£ºÊäÈëÍ¼ÏñµÄ¸ß
+## å‡½æ•°ï¼šRGB2Lab
+## å‡½æ•°æè¿°ï¼šå°†Point3Dæ•°ç»„ä¸­ä»ŽRGBç©ºé—´è½¬æ¢åˆ°Labç©ºé—´ã€‚
+## å‚æ•°æè¿°ï¼š
+## pointsï¼šåŒ…å«åŽŸå›¾åƒåƒç´ ç‚¹ä½ç½®å’ŒRGBå€¼ä¿¡æ¯çš„è¾“å…¥Point3Dæ•°ç»„
+## widthï¼šè¾“å…¥å›¾åƒçš„å®½
+## heightï¼šè¾“å…¥å›¾åƒçš„é«˜
 #################################################################
 */
 __global__ void RGB2Lab(Point3D *points, int width, int height) {
@@ -61,12 +61,12 @@ __global__ void RGB2Lab(Point3D *points, int width, int height) {
 
 /*
 #################################################################
-## º¯Êý£ºRGB2Lab
-## º¯ÊýÃèÊö£º½«Point3DÊý×éÖÐ´ÓLab¿Õ¼ä×ª»»µ½RGB¿Õ¼ä¡£
-## ²ÎÊýÃèÊö£º
-## points£º°üº¬Ô­Í¼ÏñÏñËØµãÎ»ÖÃºÍLabÖµÐÅÏ¢µÄÊäÈëPoint3DÊý×é
-## width£ºÊäÈëÍ¼ÏñµÄ¿í
-## height£ºÊäÈëÍ¼ÏñµÄ¸ß
+## å‡½æ•°ï¼šRGB2Lab
+## å‡½æ•°æè¿°ï¼šå°†Point3Dæ•°ç»„ä¸­ä»ŽLabç©ºé—´è½¬æ¢åˆ°RGBç©ºé—´ã€‚
+## å‚æ•°æè¿°ï¼š
+## pointsï¼šåŒ…å«åŽŸå›¾åƒåƒç´ ç‚¹ä½ç½®å’ŒLabå€¼ä¿¡æ¯çš„è¾“å…¥Point3Dæ•°ç»„
+## widthï¼šè¾“å…¥å›¾åƒçš„å®½
+## heightï¼šè¾“å…¥å›¾åƒçš„é«˜
 #################################################################
 */
 __global__ void Lab2RGB(Point3D *points, int width, int height) {
@@ -111,15 +111,15 @@ __global__ void Lab2RGB(Point3D *points, int width, int height) {
 
 /*
 #################################################################
-## º¯Êý£ºsetupPoints
-## º¯ÊýÃèÊö£ºÔÚÏÔ´æÖÐÎªPoint3DÊý×éºÍÁÙÊ±Êä³öÉêÇë¿Õ¼ä£¬½«Point3DÊý×é´ÓÄÚ´æ¸´ÖÆµ½ÏÔ´æÖÐ£¬
-##         ²¢²¢ÐÐ½«Point3DÊý×é´ÓRGB¿Õ¼ä×ª»»µ½Lab¿Õ¼ä¡£
-## ²ÎÊýÃèÊö£º
-## points£º°üº¬Ô­Í¼ÏñÏñËØµãÎ»ÖÃºÍRGBÖµÐÅÏ¢µÄÊäÈëPoint3DÄÚ´æÊý×é
-## width£ºÊäÈëÍ¼ÏñµÄ¿í
-## height£ºÊäÈëÍ¼ÏñµÄ¸ß
-## points_d£º°üº¬Ô­Í¼ÏñÏñËØµãÎ»ÖÃºÍLabÖµÐÅÏ¢µÄÊä³öPoint3DÏÔ´æÊý×é
-## temp_output£ºÓÃÓÚ´æ´¢ÖÐ¼ä½á¹ûµÄÏÔ´æÊý×é
+## å‡½æ•°ï¼šsetupPoints
+## å‡½æ•°æè¿°ï¼šåœ¨æ˜¾å­˜ä¸­ä¸ºPoint3Dæ•°ç»„å’Œä¸´æ—¶è¾“å‡ºç”³è¯·ç©ºé—´ï¼Œå°†Point3Dæ•°ç»„ä»Žå†…å­˜å¤åˆ¶åˆ°æ˜¾å­˜ä¸­ï¼Œ
+##         å¹¶å¹¶è¡Œå°†Point3Dæ•°ç»„ä»ŽRGBç©ºé—´è½¬æ¢åˆ°Labç©ºé—´ã€‚
+## å‚æ•°æè¿°ï¼š
+## pointsï¼šåŒ…å«åŽŸå›¾åƒåƒç´ ç‚¹ä½ç½®å’ŒRGBå€¼ä¿¡æ¯çš„è¾“å…¥Point3Då†…å­˜æ•°ç»„
+## widthï¼šè¾“å…¥å›¾åƒçš„å®½
+## heightï¼šè¾“å…¥å›¾åƒçš„é«˜
+## points_dï¼šåŒ…å«åŽŸå›¾åƒåƒç´ ç‚¹ä½ç½®å’ŒLabå€¼ä¿¡æ¯çš„è¾“å‡ºPoint3Dæ˜¾å­˜æ•°ç»„
+## temp_outputï¼šç”¨äºŽå­˜å‚¨ä¸­é—´ç»“æžœçš„æ˜¾å­˜æ•°ç»„
 #################################################################
 */
 extern "C"
@@ -141,15 +141,15 @@ __host__ void setupPoints(Point3D *points, int width, int height, Point3D **poin
 
 /*
 #################################################################
-## º¯Êý£ºfreePoints
-## º¯ÊýÃèÊö£º²¢ÐÐ½«Point3DÊý×é´ÓRGB¿Õ¼ä×ª»»µ½Lab¿Õ¼ä£¬½«½á¹û´ÓÏÔ´æ¸´ÖÆµ½ÄÚ´æÖÐ£¬
-##         ²¢ÊÍ·ÅÉêÇë¹ýµÄÏÔ´æ¡£
-## ²ÎÊýÃèÊö£º
-## points£º°üº¬Ô­Í¼ÏñÏñËØµãÎ»ÖÃºÍRGBÖµÐÅÏ¢µÄÊä³öPoint3DÄÚ´æÊý×é
-## width£ºÊäÈëÍ¼ÏñµÄ¿í
-## height£ºÊäÈëÍ¼ÏñµÄ¸ß
-## points_d£º°üº¬Ô­Í¼ÏñÏñËØµãÎ»ÖÃºÍLabÖµÐÅÏ¢µÄÊäÈëPoint3DÏÔ´æÊý×é
-## temp_output£ºÓÃÓÚ´æ´¢ÖÐ¼ä½á¹ûµÄÏÔ´æÊý×é
+## å‡½æ•°ï¼šfreePoints
+## å‡½æ•°æè¿°ï¼šå¹¶è¡Œå°†Point3Dæ•°ç»„ä»ŽRGBç©ºé—´è½¬æ¢åˆ°Labç©ºé—´ï¼Œå°†ç»“æžœä»Žæ˜¾å­˜å¤åˆ¶åˆ°å†…å­˜ä¸­ï¼Œ
+##         å¹¶é‡Šæ”¾ç”³è¯·è¿‡çš„æ˜¾å­˜ã€‚
+## å‚æ•°æè¿°ï¼š
+## pointsï¼šåŒ…å«åŽŸå›¾åƒåƒç´ ç‚¹ä½ç½®å’ŒRGBå€¼ä¿¡æ¯çš„è¾“å‡ºPoint3Då†…å­˜æ•°ç»„
+## widthï¼šè¾“å…¥å›¾åƒçš„å®½
+## heightï¼šè¾“å…¥å›¾åƒçš„é«˜
+## points_dï¼šåŒ…å«åŽŸå›¾åƒåƒç´ ç‚¹ä½ç½®å’ŒLabå€¼ä¿¡æ¯çš„è¾“å…¥Point3Dæ˜¾å­˜æ•°ç»„
+## temp_outputï¼šç”¨äºŽå­˜å‚¨ä¸­é—´ç»“æžœçš„æ˜¾å­˜æ•°ç»„
 #################################################################
 */
 extern "C"
@@ -171,15 +171,15 @@ __host__ void freePoints(Point3D *points, int width, int height, Point3D *points
 
 /*
 #################################################################
-## º¯Êý£ºMSFiltering_d
-## º¯ÊýÃèÊö£º
-## ²ÎÊýÃèÊö£º
-## points£º°üº¬Ô­Í¼ÏñÏñËØµãÎ»ÖÃºÍLabÖµÐÅÏ¢µÄÊäÈëPoint3DÏÔ´æÊý×é
-## width£ºÊäÈëÍ¼ÏñµÄ¿í
-## height£ºÊäÈëÍ¼ÏñµÄ¸ß
-## hs£ºÊäÈë¿Õ¼ä°ë¾¶
-## hr£ºÊäÈëÑÕÉ«°ë¾¶
-## output£ºÊä³öPoint3DÏÔ´æÊý×é
+## å‡½æ•°ï¼šMSFiltering_d
+## å‡½æ•°æè¿°ï¼š
+## å‚æ•°æè¿°ï¼š
+## pointsï¼šåŒ…å«åŽŸå›¾åƒåƒç´ ç‚¹ä½ç½®å’ŒLabå€¼ä¿¡æ¯çš„è¾“å…¥Point3Dæ˜¾å­˜æ•°ç»„
+## widthï¼šè¾“å…¥å›¾åƒçš„å®½
+## heightï¼šè¾“å…¥å›¾åƒçš„é«˜
+## hsï¼šè¾“å…¥ç©ºé—´åŠå¾„
+## hrï¼šè¾“å…¥é¢œè‰²åŠå¾„
+## outputï¼šè¾“å‡ºPoint3Dæ˜¾å­˜æ•°ç»„
 #################################################################
 */
 extern "C" 
@@ -189,15 +189,15 @@ __host__ void MSFiltering_d(Point3D *points, int width, int height, int hs, int 
 
 /*
 #################################################################
-## º¯Êý£ºMSSegmentation_d
-## º¯ÊýÃèÊö£º
-## ²ÎÊýÃèÊö£º
-## points£º°üº¬Ô­Í¼ÏñÏñËØµãÎ»ÖÃºÍLabÖµÐÅÏ¢µÄÊäÈëPoint3DÏÔ´æÊý×é
-## width£ºÊäÈëÍ¼ÏñµÄ¿í
-## height£ºÊäÈëÍ¼ÏñµÄ¸ß
-## hs£ºÊäÈë¿Õ¼ä°ë¾¶
-## hr£ºÊäÈëÑÕÉ«°ë¾¶
-## output£ºÊä³öPoint3DÏÔ´æÊý×é
+## å‡½æ•°ï¼šMSSegmentation_d
+## å‡½æ•°æè¿°ï¼š
+## å‚æ•°æè¿°ï¼š
+## pointsï¼šåŒ…å«åŽŸå›¾åƒåƒç´ ç‚¹ä½ç½®å’ŒLabå€¼ä¿¡æ¯çš„è¾“å…¥Point3Dæ˜¾å­˜æ•°ç»„
+## widthï¼šè¾“å…¥å›¾åƒçš„å®½
+## heightï¼šè¾“å…¥å›¾åƒçš„é«˜
+## hsï¼šè¾“å…¥ç©ºé—´åŠå¾„
+## hrï¼šè¾“å…¥é¢œè‰²åŠå¾„
+## outputï¼šè¾“å‡ºPoint3Dæ˜¾å­˜æ•°ç»„
 #################################################################
 */
 extern "C" 
