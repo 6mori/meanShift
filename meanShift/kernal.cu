@@ -12,14 +12,14 @@
 /*
 #################################################################
 ## 函数：RGB2Lab
-## 函数描述：将Point5D数组中从RGB空间转换到Lab空间。
+## 函数描述：将Point3D数组中从RGB空间转换到Lab空间。
 ## 参数描述：
-## points：包含原图像像素点位置和RGB值信息的输入Point5D数组
+## points：包含原图像像素点位置和RGB值信息的输入Point3D数组
 ## width：输入图像的宽
 ## height：输入图像的高
 #################################################################
 */
-__global__ void RGB2Lab(Point5D *points, int width, int height) {
+__global__ void RGB2Lab(Point3D *points, int width, int height) {
   int tidx = blockDim.x * blockIdx.x + threadIdx.x;
   int tidy = blockDim.y * blockIdx.y + threadIdx.y;
 
@@ -62,14 +62,14 @@ __global__ void RGB2Lab(Point5D *points, int width, int height) {
 /*
 #################################################################
 ## 函数：RGB2Lab
-## 函数描述：将Point5D数组中从Lab空间转换到RGB空间。
+## 函数描述：将Point3D数组中从Lab空间转换到RGB空间。
 ## 参数描述：
-## points：包含原图像像素点位置和Lab值信息的输入Point5D数组
+## points：包含原图像像素点位置和Lab值信息的输入Point3D数组
 ## width：输入图像的宽
 ## height：输入图像的高
 #################################################################
 */
-__global__ void Lab2RGB(Point5D *points, int width, int height) {
+__global__ void Lab2RGB(Point3D *points, int width, int height) {
   int tidx = blockDim.x * blockIdx.x + threadIdx.x;
   int tidy = blockDim.y * blockIdx.y + threadIdx.y;
 
@@ -112,21 +112,21 @@ __global__ void Lab2RGB(Point5D *points, int width, int height) {
 /*
 #################################################################
 ## 函数：setupPoints
-## 函数描述：在显存中为Point5D数组和临时输出申请空间，将Point5D数组从内存复制到显存中，
-##         并并行将Point5D数组从RGB空间转换到Lab空间。
+## 函数描述：在显存中为Point3D数组和临时输出申请空间，将Point3D数组从内存复制到显存中，
+##         并并行将Point3D数组从RGB空间转换到Lab空间。
 ## 参数描述：
-## points：包含原图像像素点位置和RGB值信息的输入Point5D内存数组
+## points：包含原图像像素点位置和RGB值信息的输入Point3D内存数组
 ## width：输入图像的宽
 ## height：输入图像的高
-## points_d：包含原图像像素点位置和Lab值信息的输出Point5D显存数组
+## points_d：包含原图像像素点位置和Lab值信息的输出Point3D显存数组
 ## temp_output：用于存储中间结果的显存数组
 #################################################################
 */
 extern "C"
-__host__ void setupPoints(Point5D *points, int width, int height, Point5D **points_d, Point5D **temp_output) {
-  CHECK(cudaMalloc((void**)points_d, sizeof(Point5D) * width * height));
-  CHECK(cudaMalloc((void**)temp_output, sizeof(Point5D) * width * height));
-  CHECK(cudaMemcpy(*points_d, points, sizeof(Point5D) * width * height, cudaMemcpyHostToDevice));
+__host__ void setupPoints(Point3D *points, int width, int height, Point3D **points_d, Point3D **temp_output) {
+  CHECK(cudaMalloc((void**)points_d, sizeof(Point3D) * width * height));
+  CHECK(cudaMalloc((void**)temp_output, sizeof(Point3D) * width * height));
+  CHECK(cudaMemcpy(*points_d, points, sizeof(Point3D) * width * height, cudaMemcpyHostToDevice));
   dim3 threadsPerBlock(32, 32);
   dim3 blocksPerGrid((width + threadsPerBlock.x - 1) / threadsPerBlock.x, (height + threadsPerBlock.y - 1) / threadsPerBlock.y);
   cudaError_t error_check; 
@@ -142,18 +142,18 @@ __host__ void setupPoints(Point5D *points, int width, int height, Point5D **poin
 /*
 #################################################################
 ## 函数：freePoints
-## 函数描述：并行将Point5D数组从RGB空间转换到Lab空间，将结果从显存复制到内存中，
+## 函数描述：并行将Point3D数组从RGB空间转换到Lab空间，将结果从显存复制到内存中，
 ##         并释放申请过的显存。
 ## 参数描述：
-## points：包含原图像像素点位置和RGB值信息的输出Point5D内存数组
+## points：包含原图像像素点位置和RGB值信息的输出Point3D内存数组
 ## width：输入图像的宽
 ## height：输入图像的高
-## points_d：包含原图像像素点位置和Lab值信息的输入Point5D显存数组
+## points_d：包含原图像像素点位置和Lab值信息的输入Point3D显存数组
 ## temp_output：用于存储中间结果的显存数组
 #################################################################
 */
 extern "C"
-__host__ void freePoints(Point5D *points, int width, int height, Point5D *points_d, Point5D *temp_output) {
+__host__ void freePoints(Point3D *points, int width, int height, Point3D *points_d, Point3D *temp_output) {
   dim3 threadsPerBlock(32, 32);
   dim3 blocksPerGrid((width + threadsPerBlock.x - 1) / threadsPerBlock.x, (height + threadsPerBlock.y - 1) / threadsPerBlock.y);
   cudaError_t error_check;
@@ -164,7 +164,7 @@ __host__ void freePoints(Point5D *points, int width, int height, Point5D *points
     printf("%s\n", cudaGetErrorString(error_check));
     system("pause");
   }
-  CHECK(cudaMemcpy(points, points_d, sizeof(Point5D) * width * height, cudaMemcpyDeviceToHost));
+  CHECK(cudaMemcpy(points, points_d, sizeof(Point3D) * width * height, cudaMemcpyDeviceToHost));
   CHECK(cudaFree(temp_output));
   CHECK(cudaFree(points_d));
 }
@@ -174,16 +174,16 @@ __host__ void freePoints(Point5D *points, int width, int height, Point5D *points
 ## 函数：MSFiltering_d
 ## 函数描述：
 ## 参数描述：
-## points：包含原图像像素点位置和Lab值信息的输入Point5D显存数组
+## points：包含原图像像素点位置和Lab值信息的输入Point3D显存数组
 ## width：输入图像的宽
 ## height：输入图像的高
 ## hs：输入空间半径
 ## hr：输入颜色半径
-## output：输出Point5D显存数组
+## output：输出Point3D显存数组
 #################################################################
 */
 extern "C" 
-__host__ void MSFiltering_d(Point5D *points, int width, int height, int hs, int hr, Point5D *output) {
+__host__ void MSFiltering_d(Point3D *points, int width, int height, int hs, int hr, Point3D *output) {
   printf("Hello from MSFiltering_d.\n");
 }
 
@@ -192,16 +192,16 @@ __host__ void MSFiltering_d(Point5D *points, int width, int height, int hs, int 
 ## 函数：MSSegmentation_d
 ## 函数描述：
 ## 参数描述：
-## points：包含原图像像素点位置和Lab值信息的输入Point5D显存数组
+## points：包含原图像像素点位置和Lab值信息的输入Point3D显存数组
 ## width：输入图像的宽
 ## height：输入图像的高
 ## hs：输入空间半径
 ## hr：输入颜色半径
-## output：输出Point5D显存数组
+## output：输出Point3D显存数组
 #################################################################
 */
 extern "C" 
-__host__ void MSSegmentation_d(Point5D *points, int width, int height, int hs, int hr) {
+__host__ void MSSegmentation_d(Point3D *points, int width, int height, int hs, int hr) {
   printf("Hello from MSSegmentation_d.\n");
 }
 

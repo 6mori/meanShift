@@ -23,24 +23,22 @@ using namespace std;
     } \
 }
 
-class Point5D {
+class Point3D {
 public:
-  float x;
-  float y;
   float l;
   float a;
   float b;
 public:
-  Point5D();													// Constructor
-  ~Point5D();													// Destructor
+  Point3D();													// Constructor
+  ~Point3D();													// Destructor
   void PointLab();											// Scale the OpenCV Lab color to Lab range
   void PointRGB();											// Sclae the Lab color to OpenCV range that can be used to transform to RGB
-  void MSPoint5DAccum(Point5D);								// Accumulate points
-  void MSPoint5DCopy(Point5D);								// Copy a point
-  float MSPoint5DColorDistance(Point5D);						// Compute color space distance between two points
-  float MSPoint5DSpatialDistance(Point5D);					// Compute spatial space distance between two points
-  void MSPoint5DScale(float);									// Scale point
-  void MSPOint5DSet(float, float, float, float, float);		// Set point value
+  void MSPoint3DAccum(Point3D);								// Accumulate points
+  void MSPoint3DCopy(Point3D);								// Copy a point
+  float MSPoint3DColorDistance(Point3D);						// Compute color space distance between two points
+  //float MSPoint3DSpatialDistance(Point3D);					// Compute spatial space distance between two points
+  void MSPoint3DScale(float);									// Scale point
+  void MSPoint3DSet(float, float, float);		// Set point value
   void Print();
 };
 
@@ -51,8 +49,8 @@ public:
 public:
   MeanShift(float, float);		 							// Constructor for spatial bandwidth and color bandwidth
   void run(Mat&);
-  void MSFiltering(Point5D *points, int width, int height, Point5D *temp_output);										// Mean Shift Filtering
-  void MSSegmentation(Point5D *points, int width, int height);									// Mean Shift Segmentation
+  void MSFiltering(Point3D *points, int width, int height, Point3D *temp_output);										// Mean Shift Filtering
+  void MSSegmentation(Point3D *points, int width, int height);									// Mean Shift Segmentation
 };
 
 #endif
