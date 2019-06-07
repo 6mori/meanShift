@@ -1,4 +1,4 @@
-#ifndef MEANSHIFT_H
+﻿#ifndef MEANSHIFT_H
 #define MEANSHIFT_H
 
 #include <vector>
