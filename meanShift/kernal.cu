@@ -201,7 +201,7 @@ __host__ void MSFiltering_d(Point3D *points, int width, int height, int hs, int 
 #################################################################
 */
 extern "C" 
-__host__ void MSSegmentation_d(Point3D *points, int width, int height, int hs, int hr) {
+__host__ void MSSegmentation_d(Point3D *points, int width, int height, int hs, int hr, Point3D *output) {
   printf("Hello from MSSegmentation_d.\n");
 }
 
