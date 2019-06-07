@@ -1,4 +1,4 @@
-/*
+﻿/*
 #################################################################
 ## UTF-8
 ## 文件说明：文件包含所有与cuda相关的函数。
@@ -164,7 +164,7 @@ __host__ void freePoints(Point3D *points, int width, int height, Point3D *points
     printf("%s\n", cudaGetErrorString(error_check));
     system("pause");
   }
-  CHECK(cudaMemcpy(points, points_d, sizeof(Point3D) * width * height, cudaMemcpyDeviceToHost));
+  CHECK(cudaMemcpy(points, temp_output, sizeof(Point3D) * width * height, cudaMemcpyDeviceToHost));
   CHECK(cudaFree(temp_output));
   CHECK(cudaFree(points_d));
 }
