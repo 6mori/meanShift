@@ -3,7 +3,7 @@
 using namespace std;
 
 extern "C" void MSFiltering_d(Point3D *points, int width, int height, int hs, int hr, Point3D *temp_output);
-extern "C" void MSSegmentation_d(Point3D *points, int width, int height, int hs, int hr);
+extern "C" void MSSegmentation_d(Point3D *points, int width, int height, int hs, int hr, Point3D *temp_output);
 extern "C" void setupPoints(Point3D *points, int width, int height, Point3D **points_d, Point3D **temp_output);
 extern "C" void freePoints(Point3D *points, int width, int height, Point3D *points_d, Point3D *temp_output);
 
@@ -99,8 +99,8 @@ void MeanShift::run(Mat & Img) {
     }
   }
   setupPoints(points, Img.rows, Img.cols, &points_d, &temp_output);
-  MSFiltering(points_d, Img.rows, Img.cols, temp_output);
-  MSSegmentation(points_d, Img.rows, Img.cols);
+  //MSFiltering(points_d, Img.rows, Img.cols, temp_output);
+  MSSegmentation(points_d, Img.rows, Img.cols, temp_output);
   freePoints(points, Img.rows, Img.cols, points_d, temp_output);
   for (int i = 0; i < Img.rows; i++) {
     for (int j = 0; j < Img.cols; j++) {
@@ -138,6 +138,6 @@ void MeanShift::MSFiltering(Point3D *points, int width, int height, Point3D *tem
 ## temp_output£ºÊä³öPoint3DÏÔ´æÊý×é
 #################################################################
 */
-void MeanShift::MSSegmentation(Point3D *points, int width, int height) {
-  MSSegmentation_d(points, width, height, hs, hr);
+void MeanShift::MSSegmentation(Point3D *points, int width, int height, Point3D *temp_output) {
+  MSSegmentation_d(points, width, height, hs, hr, temp_output);
 }

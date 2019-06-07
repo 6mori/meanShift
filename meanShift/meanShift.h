@@ -50,7 +50,7 @@ public:
   MeanShift(float, float);		 							// Constructor for spatial bandwidth and color bandwidth
   void run(Mat&);
   void MSFiltering(Point3D *points, int width, int height, Point3D *temp_output);										// Mean Shift Filtering
-  void MSSegmentation(Point3D *points, int width, int height);									// Mean Shift Segmentation
+  void MSSegmentation(Point3D *points, int width, int height, Point3D *temp_output);									// Mean Shift Segmentation
 };
 
 #endif
