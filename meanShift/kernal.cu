@@ -160,7 +160,7 @@ __host__ void freePoints(Point3D *points, int width, int height, Point3D *points
   dim3 threadsPerBlock(32, 32);
   dim3 blocksPerGrid((width + threadsPerBlock.x - 1) / threadsPerBlock.x, (height + threadsPerBlock.y - 1) / threadsPerBlock.y);
   cudaError_t error_check;
-  Lab2RGB<<<threadsPerBlock, blocksPerGrid>>>(points_d, width, height);
+  Lab2RGB<<<threadsPerBlock, blocksPerGrid>>>(temp_output, width, height);
   cudaDeviceSynchronize();
   error_check = cudaGetLastError();
   if (error_check != cudaSuccess) {
@@ -193,6 +193,9 @@ __global__ void filtering( Point3D *points, int width, int height, int hs, int h
       
       int step = 0 ;
       int NumPts ; 
+
+      PtCur.MSPoint5DSet( tidx, tidy, points[tidx + tidy * width].l, points[tidx + tidy * width].a, points[tidx + tidy * width].b);
+
       do { 
 
           PtPrev.MSPoint5DCopy( PtCur ) ;
@@ -203,7 +206,9 @@ __global__ void filtering( Point3D *points, int width, int height, int hs, int h
               for( int hx = left ; hx < right ; hx ++ ){ 
 
                   Pt.MSPoint5DSet( hx , hy , points[ hx + hy * width ].l , points[ hx + hy * width ].a , points[ hx + hy * width ].b ) ;
-                  Pt.PointLab() ;
+                  /*Pt.l /= 255.0f;
+                  Pt.a /= 255.0f;
+                  Pt.b /= 255.0f;*/
 
                   if( Pt.MSPoint5DColorDistance(PtCur) < hr ){ 
                       PtSum.MSPoint5DAccum( Pt ) ;
@@ -217,14 +222,14 @@ __global__ void filtering( Point3D *points, int width, int height, int hs, int h
            PtCur.MSPoint5DCopy( PtSum );
            step ++ ;
 
-      }while ( (PtCur.MSPoint5DColorDistance(PtPrev) > MS_MEAN_SHIFT_TOL_COLOR) && (PtCur.MSPoint5DSpatialDistance(PtPrev) > MS_MEAN_SHIFT_TOL_SPATIAL) && (step < MS_MAX_NUM_CONVERGENCE_STEPS) ) ;
+      } 
+      while ( (PtCur.MSPoint5DColorDistance(PtPrev) > MS_MEAN_SHIFT_TOL_COLOR) && (PtCur.MSPoint5DSpatialDistance(PtPrev) > MS_MEAN_SHIFT_TOL_SPATIAL) && (step < MS_MAX_NUM_CONVERGENCE_STEPS) ) ;
 
-      PtCur.PointRGB() ;
 
-      result[ tidx + tidy * width ].l = PtCur.l ;
-      result[ tidx + tidy * width ].a = PtCur.a ;
-      result[ tidx + tidy * width ].b = PtCur.b ;
-
+      result[ tidx + tidy * width ].l = PtCur.l;
+      result[ tidx + tidy * width ].a = PtCur.a;
+      result[ tidx + tidy * width ].b = PtCur.b;
+      
    }
 
 

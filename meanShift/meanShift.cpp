@@ -99,8 +99,8 @@ void MeanShift::run(Mat & Img) {
     }
   }
   setupPoints(points, Img.rows, Img.cols, &points_d, &temp_output);
-  //MSFiltering(points_d, Img.rows, Img.cols, temp_output);
-  MSSegmentation(points_d, Img.rows, Img.cols, temp_output);
+  MSFiltering(points_d, Img.rows, Img.cols, temp_output);
+  //MSSegmentation(points_d, Img.rows, Img.cols, temp_output);
   freePoints(points, Img.rows, Img.cols, points_d, temp_output);
   for (int i = 0; i < Img.rows; i++) {
     for (int j = 0; j < Img.cols; j++) {

@@ -36,7 +36,7 @@ public:
 
     __device__ void MSPoint5DScale(float);									// Scale point
 
-    __device__ void MSPOint5DSet(float, float, float, float, float);		// Set point value
+    __device__ void MSPoint5DSet(float, float, float, float, float);		// Set point value
 
     __device__ void Print();												// Print 5D point
 
@@ -151,7 +151,7 @@ void Point5D::MSPoint5DScale(float scale){
 
 // Set point value
 
-void Point5D::MSPOint5DSet(float px, float py, float pl, float pa, float pb){
+void Point5D::MSPoint5DSet(float px, float py, float pl, float pa, float pb){
 
 	x = px;
 

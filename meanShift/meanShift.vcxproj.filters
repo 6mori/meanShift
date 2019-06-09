@@ -26,6 +26,9 @@
     <ClInclude Include="meanShift.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="point5D.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="kernal.cu">
