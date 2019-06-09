@@ -1,4 +1,9 @@
-__global__ filtering( Point3D *points, int width, int height, int hs, int hr, Point3D *result ){ 
+#include "point5D.h"
+#define MS_MAX_NUM_CONVERGENCE_STEPS	5
+#define MS_MEAN_SHIFT_TOL_COLOR			0.3
+#define MS_MEAN_SHIFT_TOL_SPATIAL		0.3
+
+__global__ void filtering( Point3D *points, int width, int height, int hs, int hr, Point3D *result ){ 
 
     int tidx = blockDim.x * blockIdx.x + threadIdx.x ;
     int tidy = blockDim.y * blockIdx.y + threadIdx.y ;
@@ -62,10 +67,8 @@ MSFiltering_d(Point3D *points, int width, int height, int hs, int hr, Point3D *o
     
     dim3 ThreadNum( 32 , 32 ) ;
 
-    dim3 BlockNum( 1 ,  1 , 1 ) ;
+    dim3 BlockNum( width / ThreadNum.x + 1 ,  height / ThreadNum.y + 1 , 1 ) ;
 
-    BlockNum.x = width / ThreadNum.x + 1 ;
-    BlockNum.y = height / ThreadNum.y + 1 ;
     
     filtering<<< BlockNum , ThreadNum >>>( points , width , height , hs , hr , output ) ;
   }
