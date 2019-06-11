@@ -136,6 +136,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="meanShift.h" />
+    <ClInclude Include="point5D.h" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="kernal.cu" />

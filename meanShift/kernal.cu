@@ -6,7 +6,10 @@
 */
 
 #include "meanShift.h"
-
+#include "point5D.h"
+#define MS_MAX_NUM_CONVERGENCE_STEPS	5
+#define MS_MEAN_SHIFT_TOL_COLOR			0.3
+#define MS_MEAN_SHIFT_TOL_SPATIAL		0.3
 #include <stdio.h>
 
 /*
@@ -157,7 +160,7 @@ __host__ void freePoints(Point3D *points, int width, int height, Point3D *points
   dim3 threadsPerBlock(32, 32);
   dim3 blocksPerGrid((width + threadsPerBlock.x - 1) / threadsPerBlock.x, (height + threadsPerBlock.y - 1) / threadsPerBlock.y);
   cudaError_t error_check;
-  Lab2RGB<<<threadsPerBlock, blocksPerGrid>>>(points_d, width, height);
+  Lab2RGB<<<threadsPerBlock, blocksPerGrid>>>(temp_output, width, height);
   cudaDeviceSynchronize();
   error_check = cudaGetLastError();
   if (error_check != cudaSuccess) {
@@ -168,6 +171,71 @@ __host__ void freePoints(Point3D *points, int width, int height, Point3D *points
   CHECK(cudaFree(temp_output));
   CHECK(cudaFree(points_d));
 }
+
+__global__ void filtering( Point3D *points, int width, int height, int hs, int hr, Point3D *result ){ 
+
+  int tidx = blockDim.x * blockIdx.x + threadIdx.x ;
+  int tidy = blockDim.y * blockIdx.y + threadIdx.y ;
+
+  if ( tidx < width && tidy < height ){ 
+
+      int left = (tidx - hs ) < 0 ? 0 : (tidx - hs ) ;
+      int right = (tidx + hs ) >= width ? width : (tidx + hs ) ;
+      int top = ( tidy - hs ) < 0 ? 0 : ( tidy - hs ) ;
+      int bottom = ( tidy + hs ) >= height ? height : ( tidy + hs ) ; 
+
+      // Point5D .
+
+      Point5D PtCur ;
+      Point5D PtPrev ;
+      Point5D PtSum ;
+      Point5D Pt ;
+      
+      int step = 0 ;
+      int NumPts ; 
+
+      PtCur.MSPoint5DSet( tidx, tidy, points[tidx + tidy * width].l, points[tidx + tidy * width].a, points[tidx + tidy * width].b);
+
+      do { 
+
+          PtPrev.MSPoint5DCopy( PtCur ) ;
+          PtSum.MSPoint5DSet( 0 , 0 , 0 , 0 , 0 ) ;
+          NumPts = 0 ;
+          
+          for( int hy = top ; hy < bottom ; hy ++ ){ 
+              for( int hx = left ; hx < right ; hx ++ ){ 
+
+                  Pt.MSPoint5DSet( hx , hy , points[ hx + hy * width ].l , points[ hx + hy * width ].a , points[ hx + hy * width ].b ) ;
+                  /*Pt.l /= 255.0f;
+                  Pt.a /= 255.0f;
+                  Pt.b /= 255.0f;*/
+
+                  if( Pt.MSPoint5DColorDistance(PtCur) < hr ){ 
+                      PtSum.MSPoint5DAccum( Pt ) ;
+                      NumPts ++ ;
+                   }
+
+               }
+           }
+
+           PtSum.MSPoint5DScale( 1.0 / NumPts ) ;
+           PtCur.MSPoint5DCopy( PtSum );
+           step ++ ;
+
+      } 
+      while ( (PtCur.MSPoint5DColorDistance(PtPrev) > MS_MEAN_SHIFT_TOL_COLOR) && (PtCur.MSPoint5DSpatialDistance(PtPrev) > MS_MEAN_SHIFT_TOL_SPATIAL) && (step < MS_MAX_NUM_CONVERGENCE_STEPS) ) ;
+
+
+      result[ tidx + tidy * width ].l = PtCur.l;
+      result[ tidx + tidy * width ].a = PtCur.a;
+      result[ tidx + tidy * width ].b = PtCur.b;
+      
+   }
+
+
+}
+
+
 
 /*
 #################################################################
@@ -185,6 +253,12 @@ __host__ void freePoints(Point3D *points, int width, int height, Point3D *points
 extern "C" 
 __host__ void MSFiltering_d(Point3D *points, int width, int height, int hs, int hr, Point3D *output) {
   printf("Hello from MSFiltering_d.\n");
+  dim3 ThreadNum( 32 , 32 ) ;
+
+  dim3 BlockNum( width / ThreadNum.x + 1 ,  height / ThreadNum.y + 1 , 1 ) ;
+
+  
+  filtering<<< BlockNum , ThreadNum >>>( points , width , height , hs , hr , output ) ;
 }
 
 /*

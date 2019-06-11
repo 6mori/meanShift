@@ -18,7 +18,7 @@
 #################################################################
 */
 int main() {
-  Mat Img = imread("tsumugi.png");
+  Mat Img = imread("baboon.ppm");
 
   resize(Img, Img, Size(256, 256), 0, 0, 1);
 
